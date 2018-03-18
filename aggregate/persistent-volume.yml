@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nodered-pv
+  namespace: nodered
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteOnce
+  gcePersistentDisk:
+    pdName: nodered-pv-disk
+    fsType: ext4

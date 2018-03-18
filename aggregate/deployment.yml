@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: nodered
+  namespace: nodered
+spec:
+  selector:
+    matchLabels:
+      app: nodered
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nodered
+    spec:
+      containers:
+      - image: gcr.io/axiom-194219/nodered
+        name: nodered
+        ports:
+        - containerPort: 1880
+          name: nodered
+        volumeMounts:
+        - name: nodered-persistent-storage
+          mountPath: /data
+      volumes:
+      - name: nodered-persistent-storage
+        persistentVolumeClaim:
+          claimName: nodered-pv-claim
