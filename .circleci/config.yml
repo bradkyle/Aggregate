@@ -34,6 +34,9 @@ jobs:
           name: Decode and Store Service Account
           command: echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
       - run:
+          name: Struc
+          command: pwd && ls -a    
+      - run:
           name: Setup Google Cloud
           command: ./gcloud_setup.sh   
 
