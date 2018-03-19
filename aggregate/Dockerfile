@@ -32,7 +32,5 @@ EXPOSE 1880
 ENV FLOWS=flows.json
 ENV NODE_PATH=/usr/src/node-red/node_modules:/data/node_modules
 
-# Add authentication to node red
-#RUN cat auth.js >> /data/settings.js
 
 CMD ["npm", "start", "--", "--settings", "/data/new_settings.js", "--userDir", "/data"]

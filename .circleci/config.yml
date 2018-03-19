@@ -1,8 +1,9 @@
+
 version: 2
 jobs:
   build:
     docker:
-      - image: debian:stretch
+      - image: google/cloud-sdk
     steps:
       - checkout
       - run:
@@ -14,7 +15,7 @@ jobs:
 
   test:
     docker:
-      - image: debian:stretch
+      - image: google/cloud-sdk
     steps:
       - checkout
       - run:
@@ -33,6 +34,9 @@ jobs:
         name: Decode and Store Service Account
         command: echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
 
+      - run:
+        name: Setup Google Cloud
+        command: ./gcloud_setup.sh   
 
 
 workflows:
@@ -60,8 +64,6 @@ workflows:
               only:
                 - master	
       - deploy:
-          requires:
-              - hold
           filters:
               branches:
                 only:
