@@ -38,7 +38,7 @@ jobs:
           command: pwd && ls -a    
       - run:
           name: Setup Google Cloud
-          command: ./gcloud_setup.sh   
+          command: sudo ./gcloud_setup.sh   
 
 
 workflows:
