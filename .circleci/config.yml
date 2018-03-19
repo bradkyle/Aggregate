@@ -31,11 +31,11 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Decode and Store Service Account
-        command: echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
+          name: Decode and Store Service Account
+          command: echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
       - run:
-        name: Setup Google Cloud
-        command: ./gcloud_setup.sh   
+          name: Setup Google Cloud
+          command: ./gcloud_setup.sh   
 
 
 workflows:
