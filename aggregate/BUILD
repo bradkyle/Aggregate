@@ -5,6 +5,8 @@ load("@k8s_deploy//:defaults.bzl", "k8s_deploy")
 
 NAMESPACE = "nodered"
 
+# todo set kubectl context for local minikube deployment
+
 genrule(
   name="",
   message="",
