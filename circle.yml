@@ -1,0 +1,137 @@
+
+# machine:
+#   environment:
+#     S3_BUCKET: terraform-circleci-demo
+#     AWS_DEFAULT_REGION: ap-northeast-1
+#     TERRAFORM_VER: 0.7.4
+#     PATH: $PATH:$HOME/.local/bin:$HOME/bin
+
+# dependencies:
+#   override:
+#     - |
+#       if [[ ! -f ~/.local/bin/terraform ]]; then
+#         mkdir -p ~/.local/bin
+#         cd ~/.local/bin
+#         wget "https://releases.hashicorp.com/terraform/${TERRAFORM_VER}/terraform_${TERRAFORM_VER}_linux_amd64.zip"
+#         unzip *.zip
+#         rm *.zip
+#       fi
+#   cache_directories:
+#     - ~/.local/bin
+
+
+# test:
+#   override:
+#     - |
+#       if [[ "$CIRCLE_BRANCH" =~ (release/)?staging/? ]]; then
+#         make remote-enable ENV=dev
+#         make terraform ENV=dev ARGS="get -update"
+#         make terraform ENV=dev ARGS=plan
+#       elif [[ "$CIRCLE_BRANCH" =~ (release/)?production/?|master ]]; then
+#         make remote-enable ENV=prd
+#         make terraform ENV=prd ARGS="get -update"
+#         make ter
+
+# # deployment:
+# #   staging:
+# #     branch: release/staging
+# #     commands:
+# #       - make terraform ENV=staging ARGS="get -update"
+# #       - make terraform ENV=staging ARGS=apply
+# #       - make terraform ENV=staging ARGS="remote push"
+# #   production:
+# #     branch: release/production
+# #     commands:
+# #       - make terraform ENV=production ARGS="get -update"
+# #       - make terraform ENV=production ARGS=apply
+# #       - make terraform ENV=production ARGS="remote push"
+
+# version: 2
+# jobs:
+#   build:
+#     docker:
+#       - image: google/cloud-sdk
+#     steps:
+#       - checkout
+#       - run:
+#           name: Building
+#           command: echo Building...
+#       - run:
+#           name: Print the Current Time
+#           command: date
+
+#   test:
+#     docker:
+#       - image: google/cloud-sdk
+#     steps:
+#       - checkout
+#       - run:
+#           name: Testing
+#           command: echo Testing ...
+#       - run:
+#           name: Print the Current Time
+#           command: date
+
+#   #todo code quality code climate
+#   #todo static application security testing SAST
+#   #todo auto container scanning Clair
+#   #todo review apps
+#   #todo dynamic application security testing
+#   #todo auto browser performance testing code level performance
+#   #todo auto monitoring
+
+#   deploy:
+#     docker:
+#       - image: google/cloud-sdk
+#     steps:
+#       - checkout
+#       - run:
+#           name: Decode and Store Service Account
+#           command: echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
+#       - run:
+#           name: Struc
+#           command: pwd && ls -a    
+#       - run:
+#           name: Setup Google Cloud
+#           command: |
+#             sudo apt-get update && sudo apt-get --only-upgrade install kubectl
+#             gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+#             gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+#             gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+#             gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}   
+#       - run:
+#           name: Deploy App to google cloud
+#           command: |
+#             bazel run //aggregate:resources
+
+
+# workflows:
+#   version: 2
+#   build_test_deploy:
+#     jobs:
+#       - build:
+#             filters:
+#               branches:
+#                 only:
+#                   - master
+#       - test:
+#           requires:
+#             - build
+#           filters:
+#             branches:
+#               only:
+#                 - master
+#       - hold:
+#           type: approval
+#           requires:
+#             - test
+#           filters:
+#             branches:
+#               only:
+#                 - master	
+#       - deploy:
+#           filters:
+#               branches:
+#                 only:
+#                   - master
+

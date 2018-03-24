@@ -1,8 +1,6 @@
 ARG NODE_VERSION=6
 FROM node:${NODE_VERSION}
 
-RUN apt-get update && apt-get install -y vim
-
 # Home directory for Node-RED application source code.
 RUN mkdir -p /usr/src/node-red
 
